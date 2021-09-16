@@ -2551,6 +2551,13 @@ const parseCommandLine = async () => {
     }
     return params;
 };
+const testRegex = (data, pattern) => {
+    let reg = data.match(pattern);
+    if (reg !== undefined && reg !== null) {
+        return reg.length == 1;
+    }
+    return false;
+};
 const run = async () => {
     try {
         const action_path = __dirname;
@@ -2575,14 +2582,14 @@ const run = async () => {
                 }
                 switch (lineIndex) {
                     case 0: {
-                        if (_data.match("^[^\ ]+ [a-f0-9]{40}$")?.length != 1) {
+                        if (!testRegex(_data, "^[^\ ]+ [a-f0-9]{40}$")) {
                             return;
                         }
                         console.log(`[MACHINE OUTPUT] First line: ${_data}`);
                         break;
                     }
                     case 1: {
-                        if (_data.match("^[^\ ]+ -> [0-9\.\*]+$")?.length != 1) {
+                        if (!testRegex(_data, "^[^\ ]+ -> [0-9\.\*]+$")) {
                             return;
                         }
                         console.log(`[MACHINE OUTPUT] Second line: ${_data}`);
