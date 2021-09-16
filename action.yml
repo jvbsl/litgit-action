@@ -12,11 +12,11 @@ inputs:
     templates:
         descripton: 'The template files to transform. (Defaults to *.template)'
         required: false
-        default: '[]'
+        default: ''
     output:
         descripton: 'The output files to transform to(1:1 mapping of templates parameter).'
         required: false
-        default: '[]'
+        default: ''
     search_path:
         description: 'The search path to search for templates.'
         required: false

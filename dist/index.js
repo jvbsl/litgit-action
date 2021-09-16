@@ -2522,9 +2522,21 @@ const parseCommandLine = async () => {
     if (verbose.localeCompare('true', undefined, { sensitivity: 'base' }) == 0 || verbose.localeCompare('yes', undefined, { sensitivity: 'base' }) == 0) {
         params.push('-v');
     }
-    const templates = JSON.parse(core.getInput('templates', { required: false }));
-    if (templates.length > 0) {
-        console.log(`templates: ${templates}`);
+    const templates = core.getInput('templates', { required: false });
+    if (templates !== "") {
+        params.push(`-t ${templates}`);
+    }
+    const outputs = core.getInput('outputs', { required: false });
+    if (outputs !== "") {
+        params.push(`-o ${outputs}`);
+    }
+    const searchDir = core.getInput('search_path', { required: false });
+    if (searchDir !== "") {
+        params.push(`-s ${searchDir}`);
+    }
+    const destinationDir = core.getInput('destination_dir', { required: false });
+    if (destinationDir !== "") {
+        params.push(`-d ${destinationDir}`);
     }
     return params;
 };
@@ -2532,6 +2544,7 @@ const run = async () => {
     const action_path = __dirname;
     await install_litgit();
     const params = await parseCommandLine();
+    console.log(`LitGit Parameters: ${params}`);
     const options = {};
     options.silent = true;
     options.errStream = undefined;
