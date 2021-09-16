@@ -42,7 +42,11 @@ const parseCommandLine = async (): Promise<string[]> => {
     
     const templates = core.getInput('templates', { required: false });
     
-    console.log(`templates: ${templates}`);
+    if (templates == null) {
+        console.log(`templates: null`);
+    } else {
+        console.log(`templates: ${templates}`);
+    }
     
     return params;
 }
