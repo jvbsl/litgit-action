@@ -2547,58 +2547,63 @@ const parseCommandLine = async () => {
     return params;
 };
 const run = async () => {
-    const action_path = __dirname;
-    await install_litgit();
-    const params = await parseCommandLine();
-    console.log(`LitGit Parameters: ${params}`);
-    const options = {};
-    options.silent = true;
-    options.errStream = undefined;
-    let lineIndex = 0;
-    let paramLineCount = 0;
-    let outputParams = [];
-    let outputFiles = [];
-    options.listeners = {
-        errline: (_data) => {
-            switch (lineIndex) {
-                case 0: {
-                    break;
-                }
-                case 1: {
-                    break;
-                }
-                case 2: {
-                    paramLineCount = Number(_data);
-                    break;
-                }
-                default: {
-                    if (paramLineCount > 0) {
-                        outputParams.push(_data);
-                        --paramLineCount;
+    try {
+        const action_path = __dirname;
+        await install_litgit();
+        const params = await parseCommandLine();
+        console.log(`LitGit Parameters: ${params}`);
+        const options = {};
+        options.silent = true;
+        options.errStream = undefined;
+        let lineIndex = 0;
+        let paramLineCount = 0;
+        let outputParams = [];
+        let outputFiles = [];
+        options.listeners = {
+            errline: (_data) => {
+                switch (lineIndex) {
+                    case 0: {
+                        break;
                     }
-                    else {
-                        outputFiles.push(_data);
+                    case 1: {
+                        break;
                     }
-                    break;
+                    case 2: {
+                        paramLineCount = Number(_data);
+                        break;
+                    }
+                    default: {
+                        if (paramLineCount > 0) {
+                            outputParams.push(_data);
+                            --paramLineCount;
+                        }
+                        else {
+                            outputFiles.push(_data);
+                        }
+                        break;
+                    }
                 }
+                ++lineIndex;
+            },
+            stdline: (_data) => {
             }
-            ++lineIndex;
-        },
-        stdline: (_data) => {
+        };
+        await exec.exec(`bash ${action_path}/LitGit`, params, options);
+        for (let outputParam of outputParams) {
+            const ind = outputParam.indexOf('=');
+            if (ind == -1) {
+                continue;
+            }
+            const outputParamName = outputParam.substring(0, ind);
+            const outputParamValue = outputParam.substring(ind + 1);
+            console.log(`Setting ${outputParamName} to ${outputParamValue}`);
+            core.setOutput(outputParamName, outputParamValue);
         }
-    };
-    await exec.exec(`bash ${action_path}/LitGit`, params, options);
-    for (let outputParam of outputParams) {
-        const ind = outputParam.indexOf('=');
-        if (ind == -1) {
-            continue;
-        }
-        const outputParamName = outputParam.substring(0, ind);
-        const outputParamValue = outputParam.substring(ind + 1);
-        console.log(`Setting ${outputParamName} to ${outputParamValue}`);
-        core.setOutput(outputParamName, outputParamValue);
+        core.setOutput("CREATED_TEMPLATE_FILES", outputFiles);
     }
-    core.setOutput("CREATED_TEMPLATE_FILES", outputFiles);
+    catch (error) {
+        core.setFailed(error.message);
+    }
 };
 run();
 

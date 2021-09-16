@@ -137,7 +137,6 @@ const run = async (): Promise<void> => {
         core.setOutput("CREATED_TEMPLATE_FILES", outputFiles);
     } catch(error) {
         core.setFailed((error as Error).message);
-        reject(error);
     }
 }
 
