@@ -10,24 +10,29 @@ dotenv.config();
 const install_litgit = async (): Promise<void> => {
     const action_path = __dirname;
     return new Promise<void>((resolve, reject) => {
-        const file = fs.createWriteStream(`${action_path}/litgit.tar.gz`);
+        try {
+            const file = fs.createWriteStream(`${action_path}/litgit.tar.gz`);
 
-        const litgit_version = '0.2.0.36-alpha';
+            const litgit_version = '0.2.0.36-alpha';
 
-        const req = https.get(`https://github.com/jvbsl/LitGit/releases/download/${litgit_version}/litgit.tar.gz`, function(response) {
-            response.pipe(file);
-            response.on('end', async () => {
-                await exec.exec(`tar xvzf ${action_path}/litgit.tar.gz -C ${action_path}`);
-                resolve();
+            const req = https.get(`https://github.com/jvbsl/LitGit/releases/download/${litgit_version}/litgit.tar.gz`, function(response) {
+                response.pipe(file);
+                response.on('end', async () => {
+                    await exec.exec(`tar xvzf ${action_path}/litgit.tar.gz -C ${action_path}`);
+                    resolve();
+                });
             });
-        });
 
-        req.on('error', (error) => {
+            req.on('error', (error) => {
+                core.setFailed((error as Error).message);
+                reject(error);
+            });
+            
+            req.end();
+        } catch(error) {
             core.setFailed((error as Error).message);
             reject(error);
-        });
-        
-        req.end();
+        }
         
     });
 }
