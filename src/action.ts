@@ -156,11 +156,12 @@ const run = async (): Promise<void> => {
                 console.log(_data);
             }
         };
-
+        console.log("Starting bash LitGit");
         const retCode = await exec.exec(`bash ${action_path}/LitGit`, params, options);
+        console.log(`LitGit exited with code: ${retCode}`);
         let err = "";
         for(let l of outputLines) {
-            err+=`${l}\n`
+            err+=`${l}\n`;
         }
         if (retCode != 0) {
             core.setFailed(err);
