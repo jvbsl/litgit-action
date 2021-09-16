@@ -83,13 +83,16 @@ const run = async (): Promise<void> => {
         const options:exec.ExecOptions = {};
         options.silent = true;
         options.errStream = undefined;
+        options.ignoreReturnCode = true;
         let lineIndex: number = 0;
         let paramLineCount: number = 0;
         
         let outputParams: string[] = [];
         let outputFiles: string[] = [];
+        let outputLines: string[] = [];
         options.listeners = {
             errline: (_data: string) => {
+                outputLines.push(_data);
                 switch(lineIndex) {
                     case 0: {
                         
@@ -121,7 +124,14 @@ const run = async (): Promise<void> => {
             }
         };
 
-        await exec.exec(`bash ${action_path}/LitGit`, params, options);
+        const retCode = await exec.exec(`bash ${action_path}/LitGit`, params, options);
+        if (retCode != 0) {
+            let err = "";
+            for(let l of outputLines) {
+                err+=`${l}\n`
+            }
+            core.setFailed(err);
+        }
         
         for(let outputParam of outputParams) {
             const ind = outputParam.indexOf('=');
