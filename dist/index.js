@@ -2522,6 +2522,11 @@ const install_litgit = async () => {
         }
     });
 };
+const parseInputArray = (input) => {
+    var arr = input.match(/(".*?"|[^" \s]+)(?=\s* |\s*$)/g);
+    arr = arr || [];
+    return arr;
+};
 const parseCommandLine = async () => {
     let params = ['-m'];
     const verbose = core.getInput('verbose', { required: false });
@@ -2530,19 +2535,23 @@ const parseCommandLine = async () => {
     }
     const templates = core.getInput('templates', { required: false });
     if (templates !== "") {
-        params.push(`-t ${templates}`);
+        params.push("-t");
+        params.push(...parseInputArray(templates));
     }
     const outputs = core.getInput('outputs', { required: false });
     if (outputs !== "") {
-        params.push(`-o ${outputs}`);
+        params.push("-o");
+        params.push(...parseInputArray(outputs));
     }
     const searchDir = core.getInput('search_path', { required: false });
     if (searchDir !== "") {
-        params.push(`-s ${searchDir}`);
+        params.push("-s");
+        params.push(searchDir);
     }
     const destinationDir = core.getInput('destination_dir', { required: false });
     if (destinationDir !== "") {
-        params.push(`-d ${destinationDir}`);
+        params.push("-d");
+        params.push(destinationDir);
     }
     return params;
 };
