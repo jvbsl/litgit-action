@@ -73,13 +73,9 @@ const parseCommandLine = async () => {
     }
     const searchDir = core.getInput('search_path', { required: false });
     if (searchDir !== "") {
-        params.push("-s");
-        params.push(searchDir);
     }
     const destinationDir = core.getInput('destination_dir', { required: false });
     if (destinationDir !== "") {
-        params.push("-d");
-        params.push(destinationDir);
     }
     return params;
 };
