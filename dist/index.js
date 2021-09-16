@@ -2523,7 +2523,12 @@ const parseCommandLine = async () => {
         params.push('-v');
     }
     const templates = core.getInput('templates', { required: false });
-    console.log(`templates: ${templates}`);
+    if (templates == null) {
+        console.log(`templates: null`);
+    }
+    else {
+        console.log(`templates not null: ${templates}`);
+    }
     return params;
 };
 const run = async () => {
