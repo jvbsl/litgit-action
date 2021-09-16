@@ -1,0 +1,31 @@
+name: 'LitGit Action'
+description: 'Executes LitGit script'
+inputs:
+    parameters:
+        description: 'Command line parameters for LitGit.'
+        required: false
+        default: ""
+    verbose:
+        description: 'Whether to use verbose output or not.'
+        required: false
+        default: true
+    templates:
+        descripton: 'The template files to transform. (Defaults to *.template)'
+        required: false
+        default: null
+    output:
+        descripton: 'The output files to transform to(1:1 mapping of templates parameter).'
+        required: false
+        default: null
+    search_path:
+        description: 'The search path to search for templates.'
+        required: false
+        default: "."
+    destination_dir:
+        description: 'The output directory.'
+        required: false
+        default: "."
+
+runs:
+    using: "node12"
+    main: 'dist/index.js'

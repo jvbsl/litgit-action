@@ -1,0 +1,7 @@
+LitGit
+LitGit.ps1
+Glob.psm1
+litgit.tar.gz
+
+node_modules/
+package-lock.json
