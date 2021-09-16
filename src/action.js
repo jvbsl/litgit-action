@@ -98,6 +98,9 @@ const run = async () => {
         options.listeners = {
             errline: (_data) => {
                 outputLines.push(_data);
+                if (_data.startsWith('Error:')) {
+                    return;
+                }
                 switch (lineIndex) {
                     case 0: {
                         console.log(`[MACHINE OUTPUT] First line: ${_data}`);
@@ -109,7 +112,7 @@ const run = async () => {
                     }
                     case 2: {
                         paramLineCount = Number(_data);
-                        console.log(`[MACHINE OUTPUT] Param Line Count: ${paramLineCount}`);
+                        console.log(`[MACHINE OUTPUT] Param Line Count: ${_data} - ${paramLineCount}`);
                         break;
                     }
                     default: {
@@ -130,12 +133,15 @@ const run = async () => {
             }
         };
         const retCode = await exec.exec(`bash ${action_path}/LitGit`, params, options);
+        let err = "";
+        for (let l of outputLines) {
+            err += `${l}\n`;
+        }
         if (retCode != 0) {
-            let err = "";
-            for (let l of outputLines) {
-                err += `${l}\n`;
-            }
             core.setFailed(err);
+        }
+        else {
+            console.log(err);
         }
         for (let outputParam of outputParams) {
             const ind = outputParam.indexOf('=');
