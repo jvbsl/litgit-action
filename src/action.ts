@@ -42,8 +42,12 @@ const parseCommandLine = async (): Promise<string[]> => {
     
     const templates = core.getInput('templates', { required: false });
     
-    if (templates == null) {
+    if (templates == undefined) {
         console.log(`templates: null`);
+    } else if(templates == "") {
+    {
+        console.log(`templates not empty`);
+    }
     } else {
         console.log(`templates not null: ${templates}`);
     }
