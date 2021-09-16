@@ -84,6 +84,7 @@ const run = async () => {
         options.silent = true;
         options.errStream = undefined;
         options.ignoreReturnCode = true;
+        options.windowsVerbatimArguments = true;
         let lineIndex = 0;
         let paramLineCount = 0;
         let outputParams = [];
