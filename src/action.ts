@@ -45,7 +45,7 @@ const parseCommandLine = async (): Promise<string[]> => {
     if (templates == null) {
         console.log(`templates: null`);
     } else {
-        console.log(`templates: ${templates}`);
+        console.log(`templates not null: ${templates}`);
     }
     
     return params;
