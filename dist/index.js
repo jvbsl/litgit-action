@@ -2523,17 +2523,8 @@ const parseCommandLine = async () => {
         params.push('-v');
     }
     const templates = core.getInput('templates', { required: false });
-    if (templates === undefined) {
-        console.log(`templates: undefined`);
-    }
-    else if (templates === null) {
-        console.log(`templates: null`);
-    }
-    else if (templates === "") {
-        console.log(`templates not empty`);
-    }
-    else {
-        console.log(`templates not asdf: ${templates}`);
+    if (templates !== "") {
+        console.log(`templates: ${templates}`);
     }
     return params;
 };
