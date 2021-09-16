@@ -103,15 +103,25 @@ const run = async () => {
                 }
                 switch (lineIndex) {
                     case 0: {
+                        if (_data.match("^[^\ ]+ [a-f0-9]{40}$")?.length != 1) {
+                            return;
+                        }
                         console.log(`[MACHINE OUTPUT] First line: ${_data}`);
                         break;
                     }
                     case 1: {
+                        if (_data.match("^[^\ ]+ -> [0-9\.\*]+$")?.length != 1) {
+                            return;
+                        }
                         console.log(`[MACHINE OUTPUT] Second line: ${_data}`);
                         break;
                     }
                     case 2: {
-                        paramLineCount = Number(_data);
+                        const tmp = Number(_data);
+                        if (isNaN(tmp)) {
+                            return;
+                        }
+                        paramLineCount = tmp;
                         console.log(`[MACHINE OUTPUT] Param Line Count: ${_data} - ${paramLineCount}`);
                         break;
                     }
