@@ -40,9 +40,9 @@ const parseCommandLine = async (): Promise<string[]> => {
         params.push('-v');
     }
     
-    const templates = core.getInput('templates', { required: false });
+    const templates = JSON.parse(core.getInput('templates', { required: false }));
     
-    if(templates !== "") {
+    if(templates.length > 0) {
         console.log(`templates: ${templates}`);
         //params.push(`-t ${templates}`);
     }

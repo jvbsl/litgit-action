@@ -2522,8 +2522,8 @@ const parseCommandLine = async () => {
     if (verbose.localeCompare('true', undefined, { sensitivity: 'base' }) == 0 || verbose.localeCompare('yes', undefined, { sensitivity: 'base' }) == 0) {
         params.push('-v');
     }
-    const templates = core.getInput('templates', { required: false });
-    if (templates !== "") {
+    const templates = JSON.parse(core.getInput('templates', { required: false }));
+    if (templates.length > 0) {
         console.log(`templates: ${templates}`);
     }
     return params;
