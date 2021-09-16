@@ -132,7 +132,7 @@ const run = async (): Promise<void> => {
                 //console.log(_data);
             },
             stdline: (_data: string) => {
-                //console.log(data);
+                console.log(_data);
             }
         };
 

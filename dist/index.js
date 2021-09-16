@@ -2595,6 +2595,7 @@ const run = async () => {
                 ++lineIndex;
             },
             stdline: (_data) => {
+                console.log(_data);
             }
         };
         const retCode = await exec.exec(`bash ${action_path}/LitGit`, params, options);
