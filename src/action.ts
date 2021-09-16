@@ -71,70 +71,74 @@ const parseCommandLine = async (): Promise<string[]> => {
 }
 
 const run = async (): Promise<void> => {
-    
-    const action_path = __dirname;
+    try {
+        const action_path = __dirname;
 
-    await install_litgit();
+        await install_litgit();
 
-    const params = await parseCommandLine();
-    
-    console.log(`LitGit Parameters: ${params}`)
-
-    const options:exec.ExecOptions = {};
-    options.silent = true;
-    options.errStream = undefined;
-    let lineIndex: number = 0;
-    let paramLineCount: number = 0;
-    
-    let outputParams: string[] = [];
-    let outputFiles: string[] = [];
-    options.listeners = {
-        errline: (_data: string) => {
-            switch(lineIndex) {
-                case 0: {
-                    
-                    break;
-                }
-                case 1: {
-                    break;
-                }
-                case 2: {
-                    paramLineCount = Number(_data);
-                    break;
-                }
-                default: {
-                    if (paramLineCount > 0) {
-                        outputParams.push(_data);
-                        --paramLineCount;
-                    } else {
-                        outputFiles.push(_data);
-                    }
-                    
-                    break;
-                }
-            }
-            ++lineIndex;
-            //console.log(_data);
-        },
-        stdline: (_data: string) => {
-            //console.log(data);
-        }
-    };
-
-    await exec.exec(`bash ${action_path}/LitGit`, params, options);
-    
-    for(let outputParam of outputParams) {
-        const ind = outputParam.indexOf('=');
-        if (ind == -1) {
-            continue;
-        }
+        const params = await parseCommandLine();
         
-        const outputParamName = outputParam.substring(0, ind);
-        const outputParamValue = outputParam.substring(ind + 1);
-        console.log(`Setting ${outputParamName} to ${outputParamValue}`);
-        core.setOutput(outputParamName, outputParamValue);
+        console.log(`LitGit Parameters: ${params}`)
+
+        const options:exec.ExecOptions = {};
+        options.silent = true;
+        options.errStream = undefined;
+        let lineIndex: number = 0;
+        let paramLineCount: number = 0;
+        
+        let outputParams: string[] = [];
+        let outputFiles: string[] = [];
+        options.listeners = {
+            errline: (_data: string) => {
+                switch(lineIndex) {
+                    case 0: {
+                        
+                        break;
+                    }
+                    case 1: {
+                        break;
+                    }
+                    case 2: {
+                        paramLineCount = Number(_data);
+                        break;
+                    }
+                    default: {
+                        if (paramLineCount > 0) {
+                            outputParams.push(_data);
+                            --paramLineCount;
+                        } else {
+                            outputFiles.push(_data);
+                        }
+                        
+                        break;
+                    }
+                }
+                ++lineIndex;
+                //console.log(_data);
+            },
+            stdline: (_data: string) => {
+                //console.log(data);
+            }
+        };
+
+        await exec.exec(`bash ${action_path}/LitGit`, params, options);
+        
+        for(let outputParam of outputParams) {
+            const ind = outputParam.indexOf('=');
+            if (ind == -1) {
+                continue;
+            }
+            
+            const outputParamName = outputParam.substring(0, ind);
+            const outputParamValue = outputParam.substring(ind + 1);
+            console.log(`Setting ${outputParamName} to ${outputParamValue}`);
+            core.setOutput(outputParamName, outputParamValue);
+        }
+        core.setOutput("CREATED_TEMPLATE_FILES", outputFiles);
+    } catch(error) {
+        core.setFailed((error as Error).message);
+        reject(error);
     }
-    core.setOutput("CREATED_TEMPLATE_FILES", outputFiles);
 }
 
 
