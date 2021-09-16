@@ -107,14 +107,16 @@ const run = async (): Promise<void> => {
                 outputLines.push(_data);
                 switch(lineIndex) {
                     case 0: {
-                        
+                        console.log(`[MACHINE OUTPUT] First line: ${_data}`);
                         break;
                     }
                     case 1: {
+                        console.log(`[MACHINE OUTPUT] Second line: ${_data}`);
                         break;
                     }
                     case 2: {
                         paramLineCount = Number(_data);
+                        console.log(`[MACHINE OUTPUT] Param Line Count: ${paramLineCount}`);
                         break;
                     }
                     default: {
