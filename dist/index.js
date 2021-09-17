@@ -2529,7 +2529,7 @@ const parseInputArray = (input) => {
 };
 const parseCommandLine = async () => {
     const action_path = __dirname;
-    let params = [`${action_path}/LitGit`, '-m'];
+    let params = ['-c', `${action_path}/LitGit`, '-m'];
     const verbose = core.getInput('verbose', { required: false });
     if (verbose.localeCompare('true', undefined, { sensitivity: 'base' }) == 0 || verbose.localeCompare('yes', undefined, { sensitivity: 'base' }) == 0) {
         params.push('-v');

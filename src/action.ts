@@ -46,7 +46,7 @@ const parseInputArray = (input:string): string[] => {
 
 const parseCommandLine = async (): Promise<string[]> => {
     const action_path = __dirname;
-    let params: string[] = [`${action_path}/LitGit`,'-m'];
+    let params: string[] = ['-c', `${action_path}/LitGit`,'-m'];
     
     const verbose = core.getInput('verbose', { required: false });
     if (verbose.localeCompare('true', undefined, { sensitivity: 'base' }) == 0 || verbose.localeCompare('yes', undefined, { sensitivity: 'base' }) == 0) {
