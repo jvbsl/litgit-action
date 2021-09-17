@@ -101,7 +101,6 @@ const run = async (): Promise<void> => {
         options.silent = true;
         options.errStream = undefined;
         options.ignoreReturnCode = true;
-        options.windowsVerbatimArguments = true;
         let lineIndex: number = 0;
         let paramLineCount: number = 0;
         
