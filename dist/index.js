@@ -2529,7 +2529,9 @@ const parseInputArray = (input) => {
 };
 const parseCommandLine = async () => {
     const action_path = __dirname;
-    let params = ['-c', `${action_path}/LitGit`, '-m'];
+    var isWin = process.platform === "win32";
+    const ext = isWin ? ".ps1" : "";
+    let params = [`${action_path}/LitGit${ext}`, '-m'];
     const verbose = core.getInput('verbose', { required: false });
     if (verbose.localeCompare('true', undefined, { sensitivity: 'base' }) == 0 || verbose.localeCompare('yes', undefined, { sensitivity: 'base' }) == 0) {
         params.push('-v');
@@ -2620,8 +2622,10 @@ const run = async () => {
                 console.log(_data);
             }
         };
-        console.log("Starting bash LitGit");
-        const retCode = await exec.exec(`bash`, params, options);
+        console.log("Starting LitGit");
+        var isWin = process.platform === "win32";
+        const execShell = isWin ? "pwsh" : "bash";
+        const retCode = await exec.exec(execShell, params, options);
         console.log(`LitGit exited with code: ${retCode}`);
         let err = "";
         for (let l of outputLines) {
