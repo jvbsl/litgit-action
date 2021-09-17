@@ -45,7 +45,8 @@ const parseInputArray = (input:string): string[] => {
 }
 
 const parseCommandLine = async (): Promise<string[]> => {
-    let params: string[] = ['-m'];
+    const action_path = __dirname;
+    let params: string[] = [`${action_path}/LitGit`,'-m'];
     
     const verbose = core.getInput('verbose', { required: false });
     if (verbose.localeCompare('true', undefined, { sensitivity: 'base' }) == 0 || verbose.localeCompare('yes', undefined, { sensitivity: 'base' }) == 0) {
@@ -89,7 +90,6 @@ const testRegex = (data: string, pattern: string): Boolean =>{
 }
 const run = async (): Promise<void> => {
     try {
-        const action_path = __dirname;
 
         await install_litgit();
 
@@ -156,7 +156,7 @@ const run = async (): Promise<void> => {
             }
         };
         console.log("Starting bash LitGit");
-        const retCode = await exec.exec(`bash ${action_path}/LitGit`, params, options);
+        const retCode = await exec.exec(`bash`, params, options);
         console.log(`LitGit exited with code: ${retCode}`);
         let err = "";
         for(let l of outputLines) {
