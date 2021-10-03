@@ -24,17 +24,18 @@ const exec = __importStar(require("@actions/exec"));
 const follow_redirects_1 = require("follow-redirects");
 const fs = __importStar(require("fs"));
 const dotenv = __importStar(require("dotenv"));
+const litgit_version_1 = require("./litgit_version");
 dotenv.config();
 const install_litgit = async () => {
     const action_path = __dirname;
     return new Promise((resolve, reject) => {
         try {
             const file = fs.createWriteStream(`${action_path}/litgit.tar.gz`);
-            const litgit_version = '0.2.0.42-alpha';
-            const req = follow_redirects_1.https.get(`https://github.com/jvbsl/LitGit/releases/download/${litgit_version}/litgit.tar.gz`, function (response) {
+            console.log(`Downloading https://github.com/jvbsl/LitGit/releases/download/${litgit_version_1.litgit_version}/litgit.tar.gz`);
+            const req = follow_redirects_1.https.get(`https://github.com/jvbsl/LitGit/releases/download/${litgit_version_1.litgit_version}/litgit.tar.gz`, function (response) {
                 response.pipe(file);
                 response.on('end', async () => {
-                    await exec.exec(`tar xvzf ${action_path}/litgit.tar.gz -C ${action_path}`);
+                    await exec.exec(`tar xvzf "${action_path}/litgit.tar.gz" -C "${action_path}"`);
                     resolve();
                 });
             });

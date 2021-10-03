@@ -4,6 +4,9 @@ import { https } from 'follow-redirects';
 import * as fs from 'fs';
 import * as dotenv from 'dotenv';
 
+
+import {litgit_version} from './litgit_version';
+
 dotenv.config();
 
 
@@ -13,12 +16,12 @@ const install_litgit = async (): Promise<void> => {
         try {
             const file = fs.createWriteStream(`${action_path}/litgit.tar.gz`);
 
-            const litgit_version = '0.2.0.42-alpha';
+            console.log(`Downloading https://github.com/jvbsl/LitGit/releases/download/${litgit_version}/litgit.tar.gz`);
 
             const req = https.get(`https://github.com/jvbsl/LitGit/releases/download/${litgit_version}/litgit.tar.gz`, function(response) {
                 response.pipe(file);
                 response.on('end', async () => {
-                    await exec.exec(`tar xvzf ${action_path}/litgit.tar.gz -C ${action_path}`);
+                    await exec.exec(`tar xvzf "${action_path}/litgit.tar.gz" -C "${action_path}"`);
                     resolve();
                 });
             });

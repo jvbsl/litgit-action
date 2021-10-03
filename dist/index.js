@@ -2496,17 +2496,18 @@ const exec = __importStar(__nccwpck_require__(514));
 const follow_redirects_1 = __nccwpck_require__(707);
 const fs = __importStar(__nccwpck_require__(747));
 const dotenv = __importStar(__nccwpck_require__(437));
+const litgit_version_1 = __nccwpck_require__(597);
 dotenv.config();
 const install_litgit = async () => {
     const action_path = __dirname;
     return new Promise((resolve, reject) => {
         try {
             const file = fs.createWriteStream(`${action_path}/litgit.tar.gz`);
-            const litgit_version = '0.2.0.42-alpha';
-            const req = follow_redirects_1.https.get(`https://github.com/jvbsl/LitGit/releases/download/${litgit_version}/litgit.tar.gz`, function (response) {
+            console.log(`Downloading https://github.com/jvbsl/LitGit/releases/download/${litgit_version_1.litgit_version}/litgit.tar.gz`);
+            const req = follow_redirects_1.https.get(`https://github.com/jvbsl/LitGit/releases/download/${litgit_version_1.litgit_version}/litgit.tar.gz`, function (response) {
                 response.pipe(file);
                 response.on('end', async () => {
-                    await exec.exec(`tar xvzf ${action_path}/litgit.tar.gz -C ${action_path}`);
+                    await exec.exec(`tar xvzf "${action_path}/litgit.tar.gz" -C "${action_path}"`);
                     resolve();
                 });
             });
@@ -2658,6 +2659,18 @@ const run = async () => {
     }
 };
 run();
+
+
+/***/ }),
+
+/***/ 597:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.litgit_version = void 0;
+exports.litgit_version = "0.2.0.43-alpha";
 
 
 /***/ }),
