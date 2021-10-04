@@ -20,6 +20,6 @@ VERSION=$(get_latest_release "jvbsl/LitGit")
 
 if [ -n "$VERSION" ]; then
     echo "Update to version: $VERSION"
-    echo "export const litgit_version: '$VERSION';">src/litgit_version.d.ts
+    echo "export const litgit_version : string = '$VERSION';">src/litgit_version.ts
     npm run build
 fi

@@ -1,2 +1,1 @@
-
-export const litgit_version = "0.2.0.43-alpha";
+export const litgit_version : string = '0.2.0.44-alpha';
