@@ -84,6 +84,11 @@ const parseCommandLine = async (): Promise<string[]> => {
         params.push(destinationDir);
     }
 
+    const additionalParameters = core.getInput('parameters', { required: false });
+    if (additionalParameters !== "") {
+        params.push(...parseInputArray(additionalParameters))
+    }
+
     return params;
 }
 const testRegex = (data: string, pattern: string): Boolean =>{

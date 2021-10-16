@@ -2557,6 +2557,10 @@ const parseCommandLine = async () => {
         params.push("-d");
         params.push(destinationDir);
     }
+    const additionalParameters = core.getInput('parameters', { required: false });
+    if (additionalParameters !== "") {
+        params.push(...parseInputArray(additionalParameters));
+    }
     return params;
 };
 const testRegex = (data, pattern) => {
